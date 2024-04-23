@@ -7,7 +7,6 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 def main():
-
     db_session.global_init("db/blogs.db")
     user = User()
     user.name = "Пользователь 3"
@@ -21,7 +20,7 @@ def main():
     for user in db_sess.query(User).filter(User.id > 1, User.email.notilike("%1%")):
         print(user)
     # app.run()
-#dfsfs
+
 
 if __name__ == '__main__':
     main()
