@@ -1,0 +1,36 @@
+div.register >  {
+
+}
+
+body {
+  font-family: PT Astra Sans;
+   background-color: #e9e9f0;
+   }
+.footer {background-color: #2e34e5;
+   position: fixed;
+   right: 0;
+   bottom: 0;
+   text-align: center;
+   width: 99%;
+   font-size: 19px;
+   font-weight: bold;
+   color: #fafaff;
+ }
+div#exampleModalCenter  a.button {
+      background-color: #FF4F00;
+      border: none;
+      color: white;
+      padding: 20px 34px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 4px 2px;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 4px;
+      }
+div.modal-dialog-centered {
+      background-color: #0031FD;
+}

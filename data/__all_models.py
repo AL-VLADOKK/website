@@ -1,2 +1,4 @@
 from . import users
-from . import news
+from . import lots
+from . import tariff
+from . import paket_users

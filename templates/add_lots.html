@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Добавление лота</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% if modal %}
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Сформировать лот</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Недостаточно трафика для размещения лота.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <button>NINE</button>
+    {% endif %}
+    <div class="gb_quantity">
+        <label>{{ form.quantity.label }}</label>
+        <p>{{ form.quantity(class="form-control") }}</p>
+        {% for error in form.quantity.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        {% if error_gb[0][0] == 0 %}
+        <div class="alert alert-info" role="alert">Максимум 120 ГБ<br>
+            Минимум 1 ГБ
+        </div>
+        {% elif error_gb[0][0] == 1 and error_gb[1][0] == 1 %}
+        <div class="alert alert-warning" role="alert">!!Максимум 120 ГБ!!</div>
+        {% elif error_gb[0][0] == 1 and error_gb[1][0] == 2 %}
+        <div class="alert alert-warning" role="alert">!!Минимум 1 ГБ!!</div>
+        {% endif %}
+    </div>
+    <div class="label-holder counter-field-holder">
+        <label>{{ form.price.label }}</label>
+        <p>{{ form.price(class="form-control") }}</p>
+        {% for error in form.price.errors %}
+        <p class="alert alert-danger" role="alert">
+            {{ error }}
+        </p>
+        {% endfor %}
+        {% if error_gb[0][1] == 0 %}
+        <div class="alert alert-info" role="alert">Максимум 50 р. за 1 гб<br>
+            Минимум 20 р. за 1 гб
+        </div>
+        {% elif error_gb[0][1] == 1 and error_gb[1][1] == 1 %}
+        <div class="alert alert-warning" role="alert">!!Максимум 50 р. за 1 гб!!</div>
+        {% elif error_gb[0][1] == 1 and error_gb[1][1] == 2 %}
+        <div class="alert alert-warning" role="alert">!!Минимум 20 р. за 1 гб!!</div>
+        {% endif %}
+    </div>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+
+
+</form>
+{% endblock %}

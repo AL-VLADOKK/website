@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Записи в блоге</h1>
+{% if current_user.is_authenticated %}
+{% if not tarif_flag %}
+<a href="lots" class="btn btn-sell">Добавить лот</a>
+{% else %}
+<button type="button" class="btn btn-sell" data-toggle="modal" data-target="#exampleModalCenter">
+    Добавить лот
+</button>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Невозможно добавить лот</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Невозможно доавить лот, так как у вас нет тарифа<br>
+                Подключите тариф и продавайте ги-ги без проблем!
+            </div>
+            <a href="ТУТАНАДАСТРАНИЧКУОРГАНИЗОВАТЬЖДЕМВЯЧЕСЛАВА" class="button">Подключить выгодный тариф.</a>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+{% for item in lots%}
+<div class="col-md6 border rounded">
+    <h2>Лот на продажу</h2>
+    <div>
+        Имя продавца:{{item.user.name}}
+    </div>
+    <div>
+        Количество - {{item.quantity}}, стоимость - {{item.quantity * item.price}} р.<br>
+        Дата создания этого лота: {{item.created_date}}
+    </div>
+    {% if current_user.is_authenticated %}
+    <a href="!!!!!переписать !!!!!!" class="btn btn-buy">Купить лот</a>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}
