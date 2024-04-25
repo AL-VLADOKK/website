@@ -1,11 +1,12 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
 
 from .db_session import SqlAlchemyBase
 
 
-class Paket_Users(SqlAlchemyBase):
+class Paket_Users(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'paket_users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)

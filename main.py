@@ -1,4 +1,5 @@
 from flask import Flask, url_for, render_template, redirect
+from flask_restful import Api
 from data.users import User
 from data.lots import Lots
 from data.paket_users import Paket_Users
@@ -8,9 +9,11 @@ from forms.login import LoginForm
 from forms.add_lots import AddLotsForm
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 import datetime
-from data import db_session, lots_api
+from data import db_session
+from data.routes import initialize_routes
 
 app = Flask(__name__)
+api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -18,7 +21,7 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init("db/blogs.db")
-    app.register_blueprint(lots_api.blueprint)
+    initialize_routes(api)
     # user = User()
     # user.name = "Пользователь 1"
     # user.phone_number = "биография пользователя 1"

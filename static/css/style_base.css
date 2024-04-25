@@ -48,27 +48,34 @@ div.ModalDialogWindow h5.txt{
 div.modal-content {
       background-color: #4160E1;
 }
-nav.navbar-menu .button {
+div.div_menu .button {
       background-color: #FF4F00;
       border: none;
       color: white;
-      padding: 20px 34px;
+      padding: 20px 30px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 20px;
-      margin: 8px 10px;
+      margin: 16px 10px;
       cursor: pointer;
+      height: 100%;
 }
-nav.navbar-menu .button_menu {
+nav.navbar-menu div.div_menu{
+      height: 100%;
+}
+div.div_menu .button_menu {
       border-radius: 15px;
 }
-nav.navbar-menu .profil {
+div.div_menu .profil {
     border-radius: 50%;
     float: left;
+
 }
 nav.navbar-menu {
       background-color: #4160E1;
+      display: flex;
+      justify-content: space-around;
 }
 div.sps_lots {
     overflow: scroll;

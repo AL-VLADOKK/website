@@ -12,26 +12,32 @@
 </head>
 <body>
 <nav class="navbar-menu nav">
-    <a href="/main" class="button_menu button">Основная страница</a>
-    <a href="/tarifs" class="button_menu button">Тарифы</a>
-    <a href="/" class="button_menu button">Маркет</a>
-    {% if current_user.is_authenticated %}
-    <a href="/lots" class="button_menu button">Добавить свой лот</a>
-    <a href="/profiles" class="profil button">
+    <div class="div_menu">
+        <a href="/main" class="button_menu button">Основная страница</a>
+        <a href="/tarifs" class="button_menu button">Тарифы</a>
+        <a href="/" class="button_menu button">Маркет</a>
         {% if current_user.is_authenticated %}
-        <img src='static/img/reg_profil.png'><br>
-        {{ current_user.name }}
+        <a href="/lots" class="button_menu button">Добавить свой лот</a>
         {% endif %}
-    </a>
-    <a class="navbar-brand profil button" href="/logout">
-        <img src='static/img/go_out.png'>
-    </a>
-    {% else %}
-    <p>
-        <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-        <a class="btn btn-success" href="/login">Войти</a>
-    </p>
-    {% endif %}
+    </div>
+    <div class="div_menu">
+        {% if current_user.is_authenticated %}
+        <a href="/profiles" class="profil button">
+            {% if current_user.is_authenticated %}
+            <img src='static/img/reg_profil.png'><br>
+            {{ current_user.name }}
+            {% endif %}
+        </a>
+        <a class="navbar-brand profil button" href="/logout">
+            <img src='static/img/go_out.png'>
+        </a>
+        {% else %}
+        <p>
+            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+            <a class="btn btn-success" href="/login">Войти</a>
+        </p>
+        {% endif %}
+    </div>
 </nav>
 <nav>
 
@@ -82,6 +88,8 @@
     $(document).ready(function(){
     $('#exampleModalCenter').modal('show');
     });
+
+
 
 
 </script>
