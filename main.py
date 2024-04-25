@@ -36,7 +36,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     db_sess = db_session.create_session()
     tarif_flag = True
@@ -48,7 +48,7 @@ def index():
             (Lots.user != current_user) | (Lots.created_date > (datetime.datetime.now() - datetime.timedelta(days=30))))
     else:
         lots = db_sess.query(Lots).filter(Lots.created_date > (datetime.datetime.now() - datetime.timedelta(days=30)))
-    return render_template("index.html", news=lots, title='Лоты', tarif_flag=tarif_flag)
+    return render_template("index.html", lots=lots, title='Лоты', tarif_flag=tarif_flag)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -144,6 +144,27 @@ def add_lots():
         return redirect('/')
     return render_template('add_lots.html', title='Добавление лота',
                            form=form, error_gb=error_gb, modal=modal)
+
+
+# @app.route("/main")
+# def main():
+#     # db_sess = db_session.create_session()
+#     # if current_user.is_authenticated:
+#     return render_template("main.html")
+#
+#
+# @app.route("/tarifs")
+# def tarifs():
+#     # db_sess = db_session.create_session()
+#     # if current_user.is_authenticated:
+#     return render_template("tarifs.html")
+#
+#
+# @app.route("/profiles")
+# def profiles():
+#     # db_sess = db_session.create_session()
+#     # if current_user.is_authenticated:
+#     return render_template("profiles.html")
 
 
 @app.route('/logout')
