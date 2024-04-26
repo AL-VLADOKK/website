@@ -37,6 +37,30 @@
 {% endif %}
 <div class="sps_lots">
     {% for item in lots%}
+    <div class="modal fade ModalDialogWindow" id="exampleModalA" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title txt" id="exampleModalTitle">Нужно больше ЗОЛОТА!</h5>
+                    <button type="button" class="close btn-secondary" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="txt">
+                        Невозможно купить лот, так как у вас недостаточно средств<br>
+                        Пополните счет и покупайте ги-ги без проблем!
+                    </h5>
+                </div>
+                <a href="ТУТАНАДАСТРАНИЧКУОРГАНИЗОВАТЬЖДЕМВЯЧЕСЛАВА" class="button">Пополнить счет.</a>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <a class="lot">
         <div class="col-md6 border rounded">
             <h2>Лот на продажу</h2>
@@ -48,7 +72,15 @@
                 Дата создания этого лота: {{item.created_date}}
             </div>
             {% if current_user.is_authenticated %}
-            <a href="!!!!!переписать !!!!!!" class="btn btn-buy">Купить лот</a>
+            {% if current_user.id != item.user_id %}
+            {% if item.quantity * item.price > current_user.money %}
+            <button class="btn btn-buy" data-toggle="modal" data-target="#exampleModalA">Купить лот</button>
+            {% else %}
+            <a href="/lots/{{ item.id }}" class="btn btn-buy">Купить лот</a>
+            {% endif %}
+            {% else %}
+            <a href="/lots_delete/{{ item.id }}" class="btn btn-buy">Отменить лот</a>
+            {% endif %}
             {% endif %}
         </div>
     </a>

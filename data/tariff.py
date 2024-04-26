@@ -10,6 +10,7 @@ class Tariff(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'tariff'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    name_tariff = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     quantity_gb = sqlalchemy.Column(sqlalchemy.Float, nullable=True)
     quantity_minuts = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     quantity_sms = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)

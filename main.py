@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect
+from flask import Flask, url_for, render_template, redirect, abort
 from flask_restful import Api
 from data.users import User
 from data.lots import Lots
@@ -147,6 +147,43 @@ def add_lots():
         return redirect('/')
     return render_template('add_lots.html', title='Добавление лота',
                            form=form, error_gb=error_gb, modal=modal)
+
+
+@app.route('/lots/<int:id>', methods=['GET', 'POST'])
+@login_required
+def buy_lots(id):
+    db_sess = db_session.create_session()
+    db_sess.expire_on_commit = False
+    lots = db_sess.query(Lots).filter(Lots.id == int(id)).first()
+    if lots:
+        seller = db_sess.query(User).filter(User.id == int(lots.user_id)).first()
+        seller.money += lots.quantity * lots.price
+        current_user.money -= lots.quantity * lots.price
+        current_user_paket = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
+        current_user_paket.quantity_gb += lots.quantity
+
+        db_sess.delete(lots)
+        db_sess.merge(current_user)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+
+@app.route('/lots_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def lots_delete(id):
+    db_sess = db_session.create_session()
+    db_sess.expire_on_commit = False
+    lots = db_sess.query(Lots).filter(Lots.id == int(id)).first()
+    if lots:
+        current_user_paket = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
+        current_user_paket.quantity_gb += lots.quantity
+        db_sess.delete(lots)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
 
 
 # @app.route("/main")
