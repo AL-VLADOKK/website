@@ -200,7 +200,10 @@ def pay_card():
 def profiles():
     db_sess = db_session.create_session()
     paket_users = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
-    tariff = db_sess.query(Tariff).filter(Tariff.id == int(paket_users.tariff_id)).first()
+    if paket_users.tariff_id:
+        tariff = db_sess.query(Tariff).filter(Tariff.id == int(paket_users.tariff_id)).first()
+    else:
+        tariff = None
     if current_user.is_authenticated:
         return render_template("profiles.html", title='Профиль', paket_users=paket_users, tariff=tariff)
 

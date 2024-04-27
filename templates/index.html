@@ -74,7 +74,7 @@
                             </div>
                             <div>
                                 Количество - {{item.quantity}}, стоимость - {{item.quantity * item.price}} р.<br>
-                                Дата создания этого лота: {{item.created_date}}
+                                Дата создания этого лота: {{item.created_date.date()}}
                             </div>
                             {% if current_user.is_authenticated %}
                             {% if current_user.id != item.user_id %}
