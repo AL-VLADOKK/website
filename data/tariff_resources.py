@@ -47,7 +47,7 @@ class TariffListResource(Resource):
         args = parser.parse_args()
         session = db_session.create_session()
         tariff = Tariff()
-        tariff.quantity_gb = args['name_tariff']
+        tariff.name_tariff = args['name_tariff']
         tariff.quantity_gb = args['quantity_gb']
         tariff.quantity_minuts = args['quantity_minuts']
         tariff.quantity_sms = args['quantity_sms']

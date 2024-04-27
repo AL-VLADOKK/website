@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="container dashboard-container">
+    <div class="dashboard-container__row">
+        <div>
+            <section class="inner-dashboard-numbers__main-info">
+                <div class="inner-dashboard-numbers__main-info-content">
+                    <div class="inner-dashboard-numbers__current-number"> {{ current_user.phone_number }}</div>
+                    <div class="inner-dashboard-numbers__user-name">{{ current_user.surname }} {{ current_user.name }}</div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="dashboard-container">
+        <div>
+            <div class="dashboard-packages">
+                <div class="dashboard-packages"><p>{{ paket_users.tariff.name }}</p></div>
+                <div class="dashboard-packages-block">Доступно</div>
+                <ul class="dashboard-packages-remnants">
+                    <li class="dashboard-packages-remnant">
+                        <div class="dashboard-packages-remnant-name">Интернет</div>
+                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_gb }} ГБ</div>
+                    </li>
+                    <li class="dashboard-packages-remnant">
+                        <div class="dashboard-packages-remnant-name">Минуты</div>
+                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_minuts }}
+                        </div>
+                    </li>
+                    <li class="dashboard-packages-remnant">
+                        <div class="dashboard-packages-remnant-name">SMS</div>
+                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_sms }}</div>
+                    </li>
+                    <li class="dashboard-packages__remnant">
+                        <div class="dashboard-packages-remnant-name">Тариф</div>
+                        <div class="dashboard-packages-remnant-data">{{ tariff.name_tariff }}</div>
+                        <a class="button_menu button" href="/tarifs">Сменить тариф</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <div class="dashboard-balance">
+                <div class="dashboard-balance__buttons">
+                    <div class="dashboard-balance__balance-amount">{{ tariff.money }}</div>
+                    <div class="dashboard-balance__abonent-fee">
+                        Абонентская плата {{ tariff.coast }} Р. будет списана {{
+                        paket_users.date_renewal_tariff }}
+                    </div>
+                    <a class="button_menu button" href="/pay_card">Пополнить баланс</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

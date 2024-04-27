@@ -10,7 +10,7 @@ body {
    width: 99%;
    font-size: 19px;
    font-weight: bold;
-   color: #fafaff;
+   color: #FF4F00;
  }
 div.ModalDialogWindow a.button {
       background-color: #FF4F00;
@@ -95,10 +95,27 @@ div.sps_lots {
     cursor: pointer;
 }
 a.profil:hover img {
-  background-color: #FF4F00;
+  background-color: #fafaff;
   opacity: 0.3;
 }
 a.out:hover img {
-  background-color: #FF4F00;
+  background-color: #fafaff;
   opacity: 0.3;
 }
+div.item {
+    margin: 10px;
+}
+div.ll {
+    padding: 5px;
+    background-color: #f5f5dc ;
+}
+div.in_item {
+    padding: 5px;
+    border: 5px;
+    background-color: #DD7538 ;
+    border-radius: 5px;
+}
+div.in_item .btn-buy{
+    color: #FF4F00;
+}
+

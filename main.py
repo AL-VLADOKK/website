@@ -23,14 +23,6 @@ login_manager.init_app(app)
 def main():
     db_session.global_init("db/blogs.db")
     initialize_routes(api)
-    # user = User()
-    # user.name = "Пользователь 1"
-    # user.phone_number = "биография пользователя 1"
-    # user.surname = "email@email.ru"
-    # user.money = 0
-    # db_sess = db_session.create_session()
-    # db_sess.add(user)
-    # db_sess.commit()
     app.run()
 
 
@@ -204,10 +196,13 @@ def pay_card():
 
 
 @app.route("/profiles")
+@login_required
 def profiles():
     db_sess = db_session.create_session()
+    paket_users = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
+    tariff = db_sess.query(Tariff).filter(Tariff.id == int(paket_users.tariff_id)).first()
     if current_user.is_authenticated:
-        return render_template("profiles.html")
+        return render_template("profiles.html", title='Профиль', paket_users=paket_users, tariff=tariff)
 
 
 # @app.route("/main")
@@ -222,13 +217,6 @@ def profiles():
 #     # db_sess = db_session.create_session()
 #     # if current_user.is_authenticated:
 #     return render_template("tarifs.html")
-#
-#
-# @app.route("/profiles")
-# def profiles():
-#     # db_sess = db_session.create_session()
-#     # if current_user.is_authenticated:
-#     return render_template("profiles.html")
 
 
 @app.route('/logout')
