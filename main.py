@@ -5,6 +5,7 @@ from data.lots import Lots
 from data.paket_users import Paket_Users
 from data.tariff import Tariff
 from forms.user import RegisterForm
+from forms.pay_card import PayCard
 from forms.login import LoginForm
 from forms.add_lots import AddLotsForm
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
@@ -184,6 +185,29 @@ def lots_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/pay_card', methods=['GET', 'POST'])
+@login_required
+def pay_card():
+    form = PayCard()
+    if form.validate_on_submit():
+        money = form.money.data
+        db_sess = db_session.create_session()
+        current_user.money += money
+
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('pay_card.html', title='Добавление лота',
+                           form=form)
+
+
+# @app.route("/profiles")
+# def profiles():
+#     # db_sess = db_session.create_session()
+#     # if current_user.is_authenticated:
+#     return render_template("profiles.html")
 
 
 # @app.route("/main")

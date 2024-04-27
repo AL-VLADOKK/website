@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="pay_card">
+    <h1>Пополнить счёт</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.money.label }}<br>
+            {{ form.money(class="form-control") }}<br>
+            {% for error in form.money.errors %}
+            <p class="alert alert-danger" role="alert" style="color: red;">
+                {{ error }}
+            </p>
+            {% endfor %}
+            <div class="binking__panel binking__front-panel">
+                <img class="binking__form-bank-logo binking__hide" src='static/img/mc-vrt-pos.svg'>
+                <img class="binking__form-brand-logo binking__hide" src='static/img/mir-logo.svg'>
+                <div class="binking__front-fields">
+                    <div class="binking__field binking__number-field">
+                        {{ form.bankcard_number.label }}<br>
+                        {{ form.bankcard_number(class="form-control", inputmode="numeric", pattern="^\d{4}[ ]{1}\d{4}[ ]{1}\d{4}[ ]{1}\d{4}$", type="text",
+                        placeholder="0000 0000 0000 0000") }}<br>
+                        {% for error in form.bankcard_number.errors %}
+                        <p class="alert alert-danger" role="alert" style="color: red;">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    <label class="binking__label binking__date-label">Действует до</label>
+                    <div class="binking__field binking__month-field binking__date-field">
+                        {{ form.yy_mm.label }}<br>
+                        {{ form.yy_mm(class="form-control", inputmode="numeric", pattern="^\d{2}[ ]{1}\d{2}$", placeholder="00 00", type="text") }}<br>
+                        {% for error in form.yy_mm.errors %}
+                        <p class="alert alert-danger" role="alert" style="color: red;">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="binking__panel binking__back-panel">
+                <div class="binking__field binking__year-field binking__date-field">
+                    {{ form.cvc.label }}<br>
+                    {{ form.cvc(class="form-control", pattern="[0-9]*") }}<br>
+                    {% for error in form.cvc.errors %}
+                    <p class="alert alert-danger" role="alert" style="color: red;">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        {{message}}
+    </form>
+</div>
+{% endblock %}
