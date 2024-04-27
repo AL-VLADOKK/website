@@ -82,6 +82,7 @@ div.sps_lots {
     height: 500px;
     padding: 5px;
 }
+
 .btn-sell {
     background-color: #FF4F00;
     border: none;
@@ -93,6 +94,7 @@ div.sps_lots {
     font-size: 20px;
     margin: 8px 10px;
     cursor: pointer;
+    border-radius: 5px;
 }
 a.profil:hover img {
   background-color: #fafaff;
@@ -119,3 +121,81 @@ div.in_item .btn-buy{
     color: #FF4F00;
 }
 
+.container {
+    width: auto;
+    max-width: 1152px;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.dashboard-packages__title {
+    margin-bottom: 0;
+    min-height: 28px;
+    color: #fafaff;
+    font-size: 22px;
+    line-height: 28px;
+}
+.dashboard-packages__link-block {
+    margin-top: 27px;}
+.dashboard-packages__remnants {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.dashboard-packages__remnant {
+    margin-top: 12px;
+    width: 50%;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+}
+.dashboard-container__row {
+    display: flex;
+    color: #fafaff;
+    margin-left: 36px;
+    width: calc(80% - 18px);
+    padding: 18px;
+    margin-bottom: 18px;
+    background-color: #f5f5dc;
+    border-radius: 8px;
+}
+.dashboard-balance {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.dashboard-balance__balance-link {
+    font-weight: bold;
+}
+.dashboard-balance__balance-amount {
+    margin-top: 7px;
+    font-size: 40px;
+    line-height: 40px;
+    height: 40px;
+    font-weight: bold;
+}
+.dashboard-balance__abonent-fee {
+    margin-top: 18px;
+    min-height: 22px;
+}
+.dashboard-pac {
+    background-color: #4160E1;
+    color: #fafaff;
+    margin-left: 36px;
+    width: calc(50% - 18px);
+    padding: 18px;
+    margin-left: 36px;
+    width: calc(50% - 18px);
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+}

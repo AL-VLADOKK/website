@@ -4,7 +4,7 @@
 {% if current_user.is_authenticated %}
 <div class="container dashboard-container">
     <div class="dashboard-container__row">
-        <div>
+        <div class="dashboard-pac">
             <section class="inner-dashboard-numbers__main-info">
                 <div class="inner-dashboard-numbers__main-info-content">
                     <div class="inner-dashboard-numbers__current-number"> {{ current_user.phone_number }}</div>
@@ -14,44 +14,44 @@
             </section>
         </div>
     </div>
-    <div class="dashboard-container">
-        <div>
+    <div class="dashboard-container__row">
+        <div class="dashboard-pac">
             <div class="dashboard-packages">
                 {% if paket_users.tariff_connect %}
-                <div class="dashboard-packages"><p>{{ paket_users.tariff.name }}</p></div>
-                <div class="dashboard-packages-block">Доступно</div>
+                <div class="dashboard-packages__title"><p>{{ tariff.name_tariff }}</p></div>
+                <div class="dashboard-packages__link-block">Доступно</div>
                 {% else %}
-                <div class="dashboard-packages"><p>Тариф не подключен</p></div>
-                <div class="dashboard-packages-block">Недоступно</div>
+                <div class="dashboard-packages__title"><p>Тариф не подключен</p></div>
+                <div class="dashboard-packages__block">Недоступно</div>
                 {% endif %}
-                <ul class="dashboard-packages-remnants">
-                    <li class="dashboard-packages-remnant">
-                        <div class="dashboard-packages-remnant-name">Интернет</div>
-                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_gb }} ГБ</div>
-                    </li>
-                    <li class="dashboard-packages-remnant">
-                        <div class="dashboard-packages-remnant-name">Минуты</div>
-                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_minuts }}
-                        </div>
-                    </li>
-                    <li class="dashboard-packages-remnant">
-                        <div class="dashboard-packages-remnant-name">SMS</div>
-                        <div class="dashboard-packages-remnant-data">{{ paket_users.quantity_sms }}</div>
+                <ul class="dashboard-packages__remnants">
+                    <li class="dashboard-packages__remnant">
+                        <div class="dashboard-packages__remnant-name">Интернет</div>
+                        <div class="dashboard-packages__remnant-data">{{ paket_users.quantity_gb }} ГБ</div>
                     </li>
                     <li class="dashboard-packages__remnant">
-                        <div class="dashboard-packages-remnant-name">Тариф</div>
+                        <div class="dashboard-packages__remnant-name">Минуты</div>
+                        <div class="dashboard-packages__remnant-data">{{ paket_users.quantity_minuts }}
+                        </div>
+                    </li>
+                    <li class="dashboard-packages__remnant">
+                        <div class="dashboard-packages__remnant-name">SMS</div>
+                        <div class="dashboard-packages__remnant-data">{{ paket_users.quantity_sms }}</div>
+                    </li>
+                    <li class="dashboard-packages__remnant">
+                        <div class="dashboard-packages__remnant-name">Тариф</div>
                         {% if paket_users.tariff_connect %}
-                        <div class="dashboard-packages-remnant-data">{{ tariff.name_tariff }}</div>
-                        <a class="button_menu button" href="/tarifs">Сменить тариф</a>
+                        <div class="dashboard-packages__remnant-data">{{ tariff.name_tariff }}</div>
+                        <a class="button_menu button btn-sell" href="/tarifs">Сменить тариф</a>
                         {% else %}
-                        <div class="dashboard-packages-remnant-data">Неподключён</div>
-                        <a class="button_menu button" href="/tarifs">Подключить тариф</a>
+                        <div class="dashboard-packages__remnant-data">Неподключён</div>
+                        <a class="button_menu button btn-sell" href="/tarifs">Подключить тариф</a>
                         {% endif %}
                     </li>
                 </ul>
             </div>
         </div>
-        <div>
+        <div class="dashboard-pac">
             <div class="dashboard-balance">
                 <div class="dashboard-balance__buttons">
                     <div class="dashboard-balance__balance-amount">Счёт: {{ current_user.money }}</div>
@@ -61,14 +61,14 @@
                         paket_users.date_renewal_tariff.date() }}
                     </div>
                     {% else %}
-                    <div class="dashboard-packages-remnant-data">
+                    <div class="dashboard-packages__remnant-data">
                         Тариф неподключён
                     </div>
-                    <a class="button_menu button" href="/tarifs">
+                    <a class="button_menu button btn-sell" href="/tarifs">
                         Подключить тариф
                     </a>
                     {% endif %}
-                    <a class="button_menu button" href="/pay_card">Пополнить счёт</a>
+                    <a class="button_menu button btn-sell" href="/pay_card">Пополнить счёт</a>
                 </div>
             </div>
         </div>
