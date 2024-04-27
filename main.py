@@ -203,11 +203,11 @@ def pay_card():
                            form=form)
 
 
-# @app.route("/profiles")
-# def profiles():
-#     # db_sess = db_session.create_session()
-#     # if current_user.is_authenticated:
-#     return render_template("profiles.html")
+@app.route("/profiles")
+def profiles():
+    db_sess = db_session.create_session()
+    if current_user.is_authenticated:
+        return render_template("profiles.html")
 
 
 # @app.route("/main")

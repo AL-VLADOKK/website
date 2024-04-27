@@ -11,7 +11,8 @@ def double(x):
 
 
 def luhn_algorithm(card):
-    card = [i for i in card.split()]
+    card = ''.join(i for i in card.split(' '))
+    print(card)
     odd = map(lambda x: double(int(x)), card[::2])
     even = map(int, card[1::2])
     return (sum(odd) + sum(even)) % 10 == 0
@@ -21,7 +22,7 @@ def luhn_algorithm_check():
     message = 'Неправельный номер карты.'
 
     def _luhn_algorithm_check(form, field):
-        if luhn_algorithm(field.data):
+        if not luhn_algorithm(field.data):
             raise ValidationError(message)
 
     return _luhn_algorithm_check
