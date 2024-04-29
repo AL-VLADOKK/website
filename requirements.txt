@@ -11,3 +11,4 @@ validators
 WTForms
 WTForms-Alchemy
 WTForms-Components
+sqlalchemy_serializer
