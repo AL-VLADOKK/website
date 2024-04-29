@@ -1,0 +1,13 @@
+APScheduler
+Flask
+Flask-APScheduler
+Flask-Login
+Flask-RESTful
+Flask-WTF
+Jinja2
+pip
+requests
+validators
+WTForms
+WTForms-Alchemy
+WTForms-Components
