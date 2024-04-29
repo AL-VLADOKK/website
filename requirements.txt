@@ -12,3 +12,4 @@ WTForms
 WTForms-Alchemy
 WTForms-Components
 sqlalchemy_serializer
+urllib3
