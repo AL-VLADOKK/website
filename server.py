@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect, abort
+from flask import Flask, render_template, redirect, abort
 from flask_restful import Api
 from data.users import User
 from data.lots import Lots
@@ -13,7 +13,8 @@ import datetime
 from data import db_session
 from data.routes import initialize_routes
 from flask_apscheduler import APScheduler
-from requests import get, delete, post, put
+from requests import get, delete, put
+import os
 
 app = Flask(__name__)
 scheduler = APScheduler()
@@ -34,7 +35,7 @@ def tariff_check():
     for item in data_paket_users['paket_users']:
         if item['tariff_connect'] and datetime.datetime.now() - datetime.datetime.strptime(item['date_renewal_tariff'],
                                                                                            '%Y-%m-%d %H:%M:%S') > datetime.timedelta(
-                days=30):
+            days=30):
             data_tariff = get(f'http://localhost:5000/api/tariff/{item["tariff_id"]}').json()['tariff']
             data_users = get(f'http://localhost:5000/api/users/{item["user_id"]}').json()['users']
             if data_users['money'] >= data_tariff['coast']:
@@ -86,7 +87,8 @@ def main():
     initialize_routes(api)
     scheduler.add_job(id='Scheduled Task', func=scheduleTask, trigger="interval", hours=24)
     scheduler.start()
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 @login_manager.user_loader
