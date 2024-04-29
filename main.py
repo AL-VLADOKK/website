@@ -208,11 +208,9 @@ def profiles():
         return render_template("profiles.html", title='Профиль', paket_users=paket_users, tariff=tariff)
 
 
-# @app.route("/main")
-# def main():
-#     # db_sess = db_session.create_session()
-#     # if current_user.is_authenticated:
-#     return render_template("main.html")
+@app.route("/main")
+def main_web():
+    return render_template("main.html")
 #
 #
 # @app.route("/tarifs")
@@ -220,6 +218,13 @@ def profiles():
 #     # db_sess = db_session.create_session()
 #     # if current_user.is_authenticated:
 #     return render_template("tarifs.html")
+
+
+@app.route("/tarifs")
+def tarifs():
+    db_sess = db_session.create_session()
+    tariffs = db_sess.query(Tariff).all()
+    return render_template("tarif.html", tariff=tariffs)
 
 
 @app.route('/logout')

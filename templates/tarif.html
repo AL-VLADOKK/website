@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Тарифы</h1>
+    {% for item in tariff %}
+    <div class="tariff">
+        <div>
+            <h2>{{item.name_tariff}}</h2>
+        </div>
+        <div>
+            Гигабайты: {{item.quantity_gb}}
+        </div>
+        <div>
+            Минуты: {{item.quantity_minuts}}
+        </div>
+        <div>
+            СМС: {{item.quantity_sms}}
+        </div>
+        <div>
+            Всего {{item.coast}} рублей
+        </div>
+        <button class="btn btn-buy" data-toggle="modal" data-target="#exampleModalA">Купить лот
+                            </button>
+    </div>
+    {% endfor %}
+    <h2>С нами выгодно!</h2>
+{% endblock %}
