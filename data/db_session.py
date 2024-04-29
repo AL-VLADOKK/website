@@ -9,6 +9,7 @@ __factory = None
 
 def global_init(db_file):
     global __factory
+    print('global init')
 
     if __factory:
         return
@@ -21,6 +22,7 @@ def global_init(db_file):
 
     engine = sa.create_engine(conn_str, echo=False)
     __factory = orm.sessionmaker(bind=engine)
+    print(__factory)
 
     from . import __all_models
 

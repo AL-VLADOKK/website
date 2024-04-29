@@ -57,7 +57,7 @@
                     <div class="dashboard-balance__balance-amount">Счёт: {{ current_user.money }}</div>
                     {% if paket_users.tariff_connect %}
                     <div class="dashboard-balance__abonent-fee">
-                        Абонентская плата {{ tariff.coast }} Р. будет списана {{
+                        Абонентская плата {{ tariff.coast }} Р. будет списана<br>{{
                         paket_users.date_renewal_tariff.date() }}
                     </div>
                     {% else %}
