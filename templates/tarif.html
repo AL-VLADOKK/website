@@ -22,9 +22,13 @@
                 <div>
                     Всего {{item.coast}} рублей
                 </div>
+                <p> </p>
             </div>
             {% endfor %}
         </th>
+        {% for i in range(30) %}
+        <th><p style="color:#E9E9F0">. </p> </th>
+        {% endfor %}
         <th>
             <div>
                 <form class="tariff_form" method="post">
