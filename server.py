@@ -35,7 +35,7 @@ def tariff_check():
     for item in data_paket_users['paket_users']:
         if item['tariff_connect'] and datetime.datetime.now() - datetime.datetime.strptime(item['date_renewal_tariff'],
                                                                                            '%Y-%m-%d %H:%M:%S') > datetime.timedelta(
-            days=30):
+                days=30):
             data_tariff = get(f'http://localhost:5000/api/tariff/{item["tariff_id"]}').json()['tariff']
             data_users = get(f'http://localhost:5000/api/users/{item["user_id"]}').json()['users']
             if data_users['money'] >= data_tariff['coast']:
