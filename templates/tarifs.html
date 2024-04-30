@@ -29,19 +29,24 @@
         <th><p style="color:#E9E9F0">. </p> </th>
         {% endfor %}
         <th>
-            {% if tar_ya == True %}
-            <div>
-                <p style="font-size:40px">Тариф подключен!</p>
-            </div>
-            <div>
-                <form method="post">
-                    <div align="center">
-                        <button type="submit" class="btn btn-primary">Изменить тариф</button>
-                    </div>
-                </form>
-            </div>
+            {% if aut_us == True %}
+                {% if tar_ya == True %}
+                <div>
+                    <p style="font-size:40px">Тариф подключен!</p>
+                </div>
+                <div>
+                    <form method="post">
+                        <div align="center">
+                            <button type="submit" class="btn btn-primary">Изменить тариф</button>
+                        </div>
+                    </form>
+                </div>
+                {% else: %}
+                <div><p style="font-size:40px">Недостаточно средств</p></div>
+                {% endif %}
             {% else: %}
-            <div><p style="font-size:40px">Недостаточно средств</p></div>
+            <div><p style="font-size:40px">Войдите в аккаунт для</p></div>
+            <div align="center"><p style="font-size:40px">подключения тарифа</p></div>
             {% endif %}
         </th>
     </tr>
