@@ -283,32 +283,35 @@ def main_window():
 def tarifs():
     db_sess = db_session.create_session()
     tariffs = db_sess.query(Tariff).all()
-    current_user_paket = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
-    if current_user_paket.tariff_id is None:
-        if request.method == 'GET':
-            return render_template("tarif.html", tariff=tariffs)
-        elif request.method == 'POST':
-            new_tariff = request.form["tariff"]
-            tar = db_sess.query(Tariff).filter(Tariff.id == int(new_tariff)).first()
-            if current_user.money <= tar.coast:
-                tar_ya = False
-                return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya)
-            else:
-                tar_ya = True
-                current_user.money -= tar.coast
-                current_user_paket.tariff_id = new_tariff
-                db_sess.merge(current_user)
+    if current_user.is_authenticated:
+        current_user_paket = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
+        if current_user_paket.tariff_id is None:
+            if request.method == 'GET':
+                return render_template("tarif.html", tariff=tariffs)
+            elif request.method == 'POST':
+                new_tariff = request.form["tariff"]
+                tar = db_sess.query(Tariff).filter(Tariff.id == int(new_tariff)).first()
+                if current_user.money <= tar.coast:
+                    tar_ya = False
+                    return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya, aut_us=True)
+                else:
+                    tar_ya = True
+                    current_user.money -= tar.coast
+                    current_user_paket.tariff_id = new_tariff
+                    db_sess.merge(current_user)
+                    db_sess.merge(current_user_paket)
+                    db_sess.commit()
+                    return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya, aut_us=True)
+        else:
+            if request.method == 'GET':
+                return render_template("tarifs.html", tariff=tariffs, tar_ya=True, aut_us=True)
+            elif request.method == 'POST':
+                current_user_paket.tariff_id = None
                 db_sess.merge(current_user_paket)
                 db_sess.commit()
-                return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya)
+                return render_template("tarif.html", tariff=tariffs)
     else:
-        if request.method == 'GET':
-            return render_template("tarifs.html", tariff=tariffs, tar_ya=True)
-        elif request.method == 'POST':
-            current_user_paket.tariff_id = None
-            db_sess.merge(current_user_paket)
-            db_sess.commit()
-            return render_template("tarif.html", tariff=tariffs)
+        return render_template("tarifs.html", tariff=tariffs, tar_ya=True, aut_us=False)
 
 
 # @app.route("/tarifs")
