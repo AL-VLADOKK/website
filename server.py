@@ -41,8 +41,6 @@ def tariff_check():
             if data_users['money'] >= data_tariff['coast']:
                 data_users['money'] -= data_tariff['coast']
                 print(put(f'http://localhost:5000/api/users/{item["user_id"]}', json=data_users).json())
-                # print(delete(f'http://localhost:5000/api/users/{item["user_id"]}').json())
-                # print(post(f'http://localhost:5000/api/users', json=data_users).json())
                 data_item = item
                 data_item["tariff_connect"] = 1
                 data_item['quantity_gb'] += data_tariff['quantity_gb']
@@ -51,8 +49,6 @@ def tariff_check():
                 data_item['date_renewal_tariff'] = str(datetime.datetime.now().isoformat(sep=' ', timespec='seconds'))
                 print(data_item)
                 print(put(f'http://localhost:5000/api/paket_users/{item["id"]}', json=data_item).json())
-                # print(delete(f'http://localhost:5000/api/paket_users/{item["id"]}').json())
-                # print(post(f'http://localhost:5000/api/paket_users', json=data_item).json())
             else:
                 data_item = item
                 data_item["tariff_connect"] = 0
@@ -61,8 +57,6 @@ def tariff_check():
                 data_item['quantity_sms'] = 0
                 data_item['date_renewal_tariff'] = str(
                     datetime.datetime.strptime(data_item['date_renewal_tariff'], '%Y-%m-%d %H:%M:%S'))
-                # print(delete(f'http://localhost:5000/api/paket_users/{item["id"]}').json())
-                # print(post(f'http://localhost:5000/api/paket_users', json=data_item).json())
                 print(put(f'http://localhost:5000/api/paket_users/{item["id"]}', json=data_item).json())
 
 
@@ -77,8 +71,6 @@ def lots_check():
             data_paket_users['quantity_gb'] += item['quantity']
             data_paket_users['date_renewal_tariff'] = str(
                 datetime.datetime.strptime(data_paket_users['date_renewal_tariff'], '%Y-%m-%d %H:%M:%S'))
-            # print(delete(f'http://localhost:5000/api/users/{item["user_id"]}').json())
-            # print(post(f'http://localhost:5000/api/users', json=data_users).json())
             print(put(f'http://localhost:5000/api/paket_users/{data_users["id"]}', json=data_paket_users).json())
 
 
