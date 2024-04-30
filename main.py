@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect, abort
+from flask import Flask, url_for, render_template, redirect, abort, request
 from flask_restful import Api
 from data.users import User
 from data.lots import Lots
@@ -211,6 +211,8 @@ def profiles():
 @app.route("/main")
 def main_web():
     return render_template("main.html")
+
+
 #
 #
 # @app.route("/tarifs")
@@ -220,11 +222,22 @@ def main_web():
 #     return render_template("tarifs.html")
 
 
-@app.route("/tarifs")
+@app.route("/tarifs", methods=['POST', 'GET'])
 def tarifs():
     db_sess = db_session.create_session()
     tariffs = db_sess.query(Tariff).all()
-    return render_template("tarif.html", tariff=tariffs)
+    if request.method == 'GET':
+        return render_template("tarif.html", tariff=tariffs)
+    elif request.method == 'POST':
+        print(request.form["tariff"])
+        return render_template("tarifs.html", tariff=tariffs)
+
+
+# @app.route("/tarifs/<int:id>", methods=['POST', 'GET'])
+# def tarifs(id):
+#     db_sess = db_session.create_session()
+#     tariffs = db_sess.query(Tariff).all()
+#     return render_template("tarif.html", tariff=tariffs)
 
 
 @app.route('/logout')

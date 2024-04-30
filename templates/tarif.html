@@ -1,27 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Тарифы</h1>
-    {% for item in tariff %}
-    <div class="tariff">
-        <div>
-            <h2>{{item.name_tariff}}</h2>
-        </div>
-        <div>
-            Гигабайты: {{item.quantity_gb}}
-        </div>
-        <div>
-            Минуты: {{item.quantity_minuts}}
-        </div>
-        <div>
-            СМС: {{item.quantity_sms}}
-        </div>
-        <div>
-            Всего {{item.coast}} рублей
-        </div>
-        <button class="btn btn-buy" data-toggle="modal" data-target="#exampleModalA">Купить лот
-                            </button>
-    </div>
-    {% endfor %}
-    <h2>С нами выгодно!</h2>
+<h1>Тарифы</h1>
+<table>
+    <tr>
+        <th>
+            {% for item in tariff %}
+            <div class="tariff">
+                <div>
+                    <h2>{{item.name_tariff}}</h2>
+                </div>
+                <div>
+                    Гигабайты: {{item.quantity_gb}}
+                </div>
+                <div>
+                    Минуты: {{item.quantity_minuts}}
+                </div>
+                <div>
+                    СМС: {{item.quantity_sms}}
+                </div>
+                <div>
+                    Всего {{item.coast}} рублей
+                </div>
+            </div>
+            {% endfor %}
+        </th>
+        <th>
+            <div>
+                <form class="tariff_form" method="post">
+                    <div class="form-group">
+                        {% for item in tariff %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tariff" id={{item.id}}
+                                   value={{item.id}} checked>
+                            <label class="form-check-label" for={{item.id}}>
+                                {{item.name_tariff}}
+                            </label>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Подключить тариф</button>
+                    </div>
+                </form>
+            </div>
+        </th>
+    </tr>
+</table>
+
+<h2>С нами выгодно!</h2>
 {% endblock %}

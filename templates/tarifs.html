@@ -1,84 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
+{% extends "base.html" %}
 
-  
-  <meta content="text/html; charset=Windows-1251" http-equiv="content-type"><title>tarifs</title></head><body style="background-image: url(file:///C:/Users/Slava/Downloads/ghdfjklfdong.png); color: black; background-color: rgb(255, 255, 255); width: 1920px;" alink="#cccccc" link="white" vlink="white">
-<table style="text-align: left; width: 1894px; height: 76px;" border="1" cellpadding="2" cellspacing="2">
-
-
-  <tbody>
+{% block content %}
+input[type="text"] {
+font-size: 36px;
+height: 36px;
+width: 500px;
+}
+<h1>Тарифы</h1>
+<table>
     <tr>
-      <td style="text-align: center; width: 431px;"><big><big><big><big><a style="text-decoration: none;" href="base.html">Signal sprint</a>
-      </big></big></big></big></td>
-      <td style="text-align: center; vertical-align: middle; width: 434px;"><big><big><big><a style="text-decoration: none;" href="tarifs.html">Тарифы</a></big></big></big></td>
-      <td style="text-align: center; width: 452px;"><a style="text-decoration: none;" href="lots.html"><big><big><big>Лоты</big></big></big></a>
-      </td>
-      <td style="text-align: center; width: 541px;"><a style="text-decoration: none;" href="profiles.html"><big><big><big>Профиль</big></big></big></a>
-      </td>
+        <th>
+            {% for item in tariff %}
+            <div class="tariff">
+                <div>
+                    <h2>{{item.name_tariff}}</h2>
+                </div>
+                <div>
+                    Гигабайты: {{item.quantity_gb}}
+                </div>
+                <div>
+                    Минуты: {{item.quantity_minuts}}
+                </div>
+                <div>
+                    СМС: {{item.quantity_sms}}
+                </div>
+                <div>
+                    Всего {{item.coast}} рублей
+                </div>
+            </div>
+            {% endfor %}
+        </th>
+        <th>
+            <div>
+                <div>
+                    Тариф подключен!
+                </div>
+            </div>
+        </th>
     </tr>
-  </tbody>
 </table>
 
-<br>
-<br>
-<table style="text-align: left; width: 1920px; height: 387px;" border="1" cellpadding="2" cellspacing="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top; text-align: center;"><big><big><big><big>Тариф "Эконом-пакет"<br>
-Безлимит на номера Signal sprint<br>
-Гигабайт: 10<br>
-Минут: 250<br>
-350 рублей в месяц</big></big></big></big><br>
-      </td>
-      <td style="vertical-align: top; text-align: center;"><big><big><big><big>Тариф "Баланс"<br>
-Безлимит на номера Signal sprint<br>
-Гигабайт: 30<br>
-
-Минут: 600<br>
-СМС: 100<br>
-
-450 рублей в месяц</big></big></big></big><br>
-      </td>
-      <td style="vertical-align: top; text-align: center;"><big><big><big><big>Тариф "Продвинутый"<br>
-
-Безлимит на номера Signal sprint<br>
-
-Гигабайт: 40<br>
-
-
-Минут: 1000<br>
-СМС: 200<br>
-550 рублей в месяц<br>
-      </big></big></big></big></td>
-    </tr>
-  </tbody>
-</table>
-<br>
-<div style="text-align: center;">
-<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top; text-align: center;"><big><big><big><big>Тариф "Престиж-пакет"<br>
-
-Безлимит на номера Signal sprint<br>
-
-Гигабайт: 50<br>
-
-
-Минут: 2000<br>
-СМС: 300<br>750 рублей в месяц</big></big></big></big></td>
-      <td style="vertical-align: top; text-align: center;"><big><big><big><big>Тариф "Премиум"<br>
-
-Безлимит на номера Signal sprint<br>
-
-Гигабайт: 60<br>
-
-
-Минут: 5000<br>
-СМС: 1000<br>1200 рублей в месяц</big></big></big></big></td>
-    </tr>
-  </tbody>
-</table>
-<br>
-</div>
-</body></html>
+<h2>С нами выгодно!</h2>
+{% endblock %}
