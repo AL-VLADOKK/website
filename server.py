@@ -299,6 +299,9 @@ def tarifs():
                     current_user.money -= tar.coast
                     current_user_paket.tariff_id = new_tariff
                     current_user_paket.tariff_connect = 1
+                    current_user_paket.quantity_gb += tar.quantity_gb
+                    current_user_paket.quantity_minuts += tar.quantity_minuts
+                    current_user_paket.quantity_sms += tar.quantity_sms
                     current_user_paket.date_renewal_tariff = datetime.datetime.now()
                     db_sess.merge(current_user)
                     db_sess.merge(current_user_paket)
