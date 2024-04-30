@@ -1,4 +1,4 @@
-from flask import Flask, url_for, render_template, redirect, abort, request
+from flask import Flask, render_template, redirect, abort
 from flask_restful import Api
 from data.users import User
 from data.lots import Lots
@@ -12,18 +12,83 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 import datetime
 from data import db_session
 from data.routes import initialize_routes
+from flask_apscheduler import APScheduler
+from requests import get, delete, put
+import os
 
 app = Flask(__name__)
+scheduler = APScheduler()
 api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 
+def scheduleTask():
+    tariff_check()
+    lots_check()
+
+
+def tariff_check():
+    data_paket_users = get('http://localhost:5000/api/paket_users').json()
+    print(data_paket_users)
+    for item in data_paket_users['paket_users']:
+        if item['tariff_connect'] and datetime.datetime.now() - datetime.datetime.strptime(item['date_renewal_tariff'],
+                                                                                           '%Y-%m-%d %H:%M:%S') > datetime.timedelta(
+            days=30):
+            data_tariff = get(f'http://localhost:5000/api/tariff/{item["tariff_id"]}').json()['tariff']
+            data_users = get(f'http://localhost:5000/api/users/{item["user_id"]}').json()['users']
+            if data_users['money'] >= data_tariff['coast']:
+                data_users['money'] -= data_tariff['coast']
+                print(put(f'http://localhost:5000/api/users/{item["user_id"]}', json=data_users).json())
+                # print(delete(f'http://localhost:5000/api/users/{item["user_id"]}').json())
+                # print(post(f'http://localhost:5000/api/users', json=data_users).json())
+                data_item = item
+                data_item["tariff_connect"] = 1
+                data_item['quantity_gb'] += data_tariff['quantity_gb']
+                data_item['quantity_minuts'] += data_tariff['quantity_minuts']
+                data_item['quantity_sms'] += data_tariff['quantity_sms']
+                data_item['date_renewal_tariff'] = str(datetime.datetime.now().isoformat(sep=' ', timespec='seconds'))
+                print(data_item)
+                print(put(f'http://localhost:5000/api/paket_users/{item["id"]}', json=data_item).json())
+                # print(delete(f'http://localhost:5000/api/paket_users/{item["id"]}').json())
+                # print(post(f'http://localhost:5000/api/paket_users', json=data_item).json())
+            else:
+                data_item = item
+                data_item["tariff_connect"] = 0
+                data_item['quantity_gb'] = 0
+                data_item['quantity_minuts'] = 0
+                data_item['quantity_sms'] = 0
+                data_item['date_renewal_tariff'] = str(
+                    datetime.datetime.strptime(data_item['date_renewal_tariff'], '%Y-%m-%d %H:%M:%S'))
+                # print(delete(f'http://localhost:5000/api/paket_users/{item["id"]}').json())
+                # print(post(f'http://localhost:5000/api/paket_users', json=data_item).json())
+                print(put(f'http://localhost:5000/api/paket_users/{item["id"]}', json=data_item).json())
+
+
+def lots_check():
+    data = get('http://localhost:5000/api/lots').json()
+    for item in data['lots']:
+        if datetime.datetime.now() - datetime.datetime.strptime(item['created_date'],
+                                                                '%Y-%m-%d %H:%M:%S') > datetime.timedelta(days=30):
+            data_users = get(f'http://localhost:5000/api/users/{item["user_id"]}').json()['users']
+            data_paket_users = get(f'http://localhost:5000/api/paket_users/{data_users["id"]}').json()['paket_users']
+            print(delete(f'http://localhost:5000/api/lots/{item["id"]}').json())
+            data_paket_users['quantity_gb'] += item['quantity']
+            data_paket_users['date_renewal_tariff'] = str(
+                datetime.datetime.strptime(data_paket_users['date_renewal_tariff'], '%Y-%m-%d %H:%M:%S'))
+            # print(delete(f'http://localhost:5000/api/users/{item["user_id"]}').json())
+            # print(post(f'http://localhost:5000/api/users', json=data_users).json())
+            print(put(f'http://localhost:5000/api/paket_users/{data_users["id"]}', json=data_paket_users).json())
+
+
 def main():
     db_session.global_init("db/blogs.db")
     initialize_routes(api)
-    app.run()
+    scheduler.add_job(id='Scheduled Task', func=scheduleTask, trigger="interval", hours=24)
+    scheduler.start()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 @login_manager.user_loader
@@ -32,7 +97,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/market", methods=['GET', 'POST'])
 def index():
     db_sess = db_session.create_session()
     tarif_flag = True
@@ -64,7 +129,7 @@ def reqister():
 
         user.name = form.name.data
         user.surname = form.surname.data
-        user.phone_number = form.phone_number.data
+        user.phone_number = form.phone_number.data.replace("+7", "8")
         user.money = float(0)
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -87,7 +152,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.phone_number == str(form.phone_number.data)).first()
+        user = db_sess.query(User).filter(User.phone_number == str(form.phone_number.data.replace("+7", "8"))).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
@@ -137,7 +202,7 @@ def add_lots():
 
         db_sess.merge(current_user)
         db_sess.commit()
-        return redirect('/')
+        return redirect('/market')
     return render_template('add_lots.html', title='Добавление лота',
                            form=form, error_gb=error_gb, modal=modal)
 
@@ -176,7 +241,7 @@ def lots_delete(id):
         db_sess.commit()
     else:
         abort(404)
-    return redirect('/')
+    return redirect('/market')
 
 
 @app.route('/pay_card', methods=['GET', 'POST'])
@@ -208,36 +273,17 @@ def profiles():
         return render_template("profiles.html", title='Профиль', paket_users=paket_users, tariff=tariff)
 
 
-@app.route("/main")
-def main_web():
-    return render_template("main.html")
+@app.route("/")
+def main_window():
+    db_sess = db_session.create_session()
+    return render_template("main.html", title='Основная')
 
 
-#
-#
 # @app.route("/tarifs")
 # def tarifs():
 #     # db_sess = db_session.create_session()
 #     # if current_user.is_authenticated:
 #     return render_template("tarifs.html")
-
-
-@app.route("/tarifs", methods=['POST', 'GET'])
-def tarifs():
-    db_sess = db_session.create_session()
-    tariffs = db_sess.query(Tariff).all()
-    if request.method == 'GET':
-        return render_template("tarif.html", tariff=tariffs)
-    elif request.method == 'POST':
-        print(request.form["tariff"])
-        return render_template("tarifs.html", tariff=tariffs)
-
-
-# @app.route("/tarifs/<int:id>", methods=['POST', 'GET'])
-# def tarifs(id):
-#     db_sess = db_session.create_session()
-#     tariffs = db_sess.query(Tariff).all()
-#     return render_template("tarif.html", tariff=tariffs)
 
 
 @app.route('/logout')
