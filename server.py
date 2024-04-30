@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, abort
+from flask import Flask, render_template, redirect, abort, request
 from flask_restful import Api
 from data.users import User
 from data.lots import Lots
@@ -277,6 +277,38 @@ def profiles():
 def main_window():
     db_sess = db_session.create_session()
     return render_template("main.html", title='Основная')
+
+
+@app.route("/tarifs", methods=['POST', 'GET'])
+def tarifs():
+    db_sess = db_session.create_session()
+    tariffs = db_sess.query(Tariff).all()
+    current_user_paket = db_sess.query(Paket_Users).filter(Paket_Users.user_id == int(current_user.id)).first()
+    if current_user_paket.tariff_id is None:
+        if request.method == 'GET':
+            return render_template("tarif.html", tariff=tariffs)
+        elif request.method == 'POST':
+            new_tariff = request.form["tariff"]
+            tar = db_sess.query(Tariff).filter(Tariff.id == int(new_tariff)).first()
+            if current_user.money <= tar.coast:
+                tar_ya = False
+                return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya)
+            else:
+                tar_ya = True
+                current_user.money -= tar.coast
+                current_user_paket.tariff_id = new_tariff
+                db_sess.merge(current_user)
+                db_sess.merge(current_user_paket)
+                db_sess.commit()
+                return render_template("tarifs.html", tariff=tariffs, tar_ya=tar_ya)
+    else:
+        if request.method == 'GET':
+            return render_template("tarifs.html", tariff=tariffs, tar_ya=True)
+        elif request.method == 'POST':
+            current_user_paket.tariff_id = None
+            db_sess.merge(current_user_paket)
+            db_sess.commit()
+            return render_template("tarif.html", tariff=tariffs)
 
 
 # @app.route("/tarifs")

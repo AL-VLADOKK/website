@@ -22,6 +22,7 @@
                 <div>
                     Всего {{item.coast}} рублей
                 </div>
+                <p> </p>
             </div>
             {% endfor %}
         </th>
@@ -29,20 +30,22 @@
         <th><p style="color:#E9E9F0">. </p> </th>
         {% endfor %}
         <th>
-            {% if tar_ya == True %}
             <div>
-                <p style="font-size:40px">Тариф подключен!</p>
-            </div>
-            <div>
-                <form method="post">
-                    <div align="center">
-                        <button type="submit" class="btn btn-primary">Изменить тариф</button>
+                <form class="tariff_form" method="post">
+                    <div class="form-group">
+                        {% for item in tariff %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tariff" id={{item.id}}
+                                   value={{item.id}} checked>
+                            <label class="form-check-label" for={{item.id}}>
+                                {{item.name_tariff}}
+                            </label>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Подключить тариф</button>
                     </div>
                 </form>
             </div>
-            {% else: %}
-            <div><p style="font-size:40px">Недостаточно средств</p></div>
-            {% endif %}
         </th>
     </tr>
 </table>
