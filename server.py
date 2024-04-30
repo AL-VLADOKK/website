@@ -298,6 +298,8 @@ def tarifs():
                     tar_ya = True
                     current_user.money -= tar.coast
                     current_user_paket.tariff_id = new_tariff
+                    current_user_paket.tariff_connect = 1
+                    current_user_paket.date_renewal_tariff = datetime.datetime.now()
                     db_sess.merge(current_user)
                     db_sess.merge(current_user_paket)
                     db_sess.commit()
@@ -307,6 +309,7 @@ def tarifs():
                 return render_template("tarifs.html", tariff=tariffs, tar_ya=True, aut_us=True)
             elif request.method == 'POST':
                 current_user_paket.tariff_id = None
+                current_user_paket.tariff_connect = 0
                 db_sess.merge(current_user_paket)
                 db_sess.commit()
                 return render_template("tarif.html", tariff=tariffs)
